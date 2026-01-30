@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>A Solemn Proposal 💖</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
 <style>
   body {
     margin: 0;
@@ -117,13 +115,8 @@
       opacity: 0;
     }
   }
-
-  input[type="email"] {
-    display: none;
-  }
 </style>
 </head>
-
 <body>
 
 <!-- STEP 1 -->
@@ -148,14 +141,8 @@
     Can thee confirm thy availability on 14th of February (Saturday)
     and agree to be my Valentine?
   </p>
-
-  <form id="valentineForm">
-    <input type="email" name="email" value="ninadbkhobrekar@gmail.com" required>
-    <input type="hidden" name="message" value="Little Troublemaker said YES to being your Valentine 💘">
-    <button class="yes" type="button" id="yesBtn">Yes 💖</button>
-  </form>
-
-  <button class="no" id="noBtn">No 💔</button>
+  <button id="yesBtn" class="yes">Yes 💖</button>
+  <button id="noBtn" class="no">No 💔</button>
 </div>
 
 <script>
@@ -171,37 +158,42 @@
     noBtn.style.top = Math.random() * (window.innerHeight - 60) + "px";
   });
 
-  // AJAX submission via Yes button
-  document.getElementById("yesBtn").addEventListener("click", function() {
-    const form = document.getElementById("valentineForm");
-    const data = new FormData(form);
+  // AJAX submission using fetch (no form element)
+  document.getElementById("yesBtn").addEventListener("click", async () => {
+    const data = new FormData();
+    data.append("email", "ninadbkhobrekar@gmail.com");
+    data.append("message", "Little Troublemaker said YES to being your Valentine 💘");
 
-    fetch('https://formspree.io/f/xojwdgvp', {
-      method: 'POST',
-      body: data,
-      headers: { 'Accept': 'application/json' }
-    }).then(response => {
-      if(response.ok){
+    try {
+      const res = await fetch("https://formspree.io/f/xojwdgvp", {
+        method: "POST",
+        body: data,
+        headers: { "Accept": "application/json" }
+      });
+
+      if(res.ok){
+        // Success animations
         launchConfetti();
         launchHearts();
         document.body.classList.add("shake");
-        setTimeout(()=>document.body.classList.remove("shake"), 400);
+        setTimeout(()=>document.body.classList.remove("shake"),400);
 
+        // Final content
         setTimeout(() => {
           document.getElementById("step3").innerHTML = `
             <h1>It Is Decided 💖</h1>
-            <img src="chick-tiger.png" alt="Chick and Tiger holding hands" class="final-image">
+            <img src="chick-tiger.png" class="final-image">
             <p>Little Troublemaker, thou art now officially my Valentine.</p>
             <p><strong>Mark the date in your calendar… it’s on.</strong></p>
           `;
         }, 200);
       } else {
-        alert("Oops! There was a problem submitting the form.");
+        alert("Oops! There was a problem submitting.");
       }
-    }).catch(error => {
-      alert("Oops! There was a network error.");
-      console.error(error);
-    });
+    } catch(e) {
+      alert("Network error");
+      console.error(e);
+    }
   });
 
   function launchHearts() {
