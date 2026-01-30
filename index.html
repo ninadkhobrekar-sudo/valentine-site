@@ -118,6 +118,11 @@
       opacity: 0;
     }
   }
+
+  /* Hide the email input */
+  input[type="email"] {
+    display: none;
+  }
 </style>
 </head>
 
@@ -146,10 +151,12 @@
     and agree to be my Valentine?
   </p>
 
-  <form action="https://formspree.io/f/xojwdgvp" method="POST">
+  <form action="https://formspree.io/f/xojwdgvp" method="POST" id="valentineForm">
+    <!-- Hidden email field for Formspree -->
+    <input type="email" name="email" value="yourverifiedemail@example.com" required>
     <input type="hidden" name="message"
            value="Little Troublemaker said YES to being your Valentine 💘">
-    <button class="yes" type="submit" onclick="yesClicked()">Yes 💖</button>
+    <button class="yes" type="submit">Yes 💖</button>
   </form>
 
   <button class="no" id="noBtn">No 💔</button>
@@ -168,52 +175,49 @@
     noBtn.style.top = Math.random() * (window.innerHeight - 60) + "px";
   });
 
-  function yesClicked() {
-    // iPhone-safe haptic illusion
-    document.body.classList.add("shake");
-    setTimeout(() => document.body.classList.remove("shake"), 400);
-
+  // Form submission with animations
+  document.getElementById("valentineForm").addEventListener("submit", function(e){
     launchConfetti();
     launchHearts();
+    document.body.classList.add("shake");
+    setTimeout(()=>document.body.classList.remove("shake"), 400);
 
-    document.getElementById("step3").innerHTML = `
-      <h1>It Is Decided 💖</h1>
-
-      <img src="chick-tiger.png"
-           alt="Chick and Tiger holding hands"
-           class="final-image">
-
-      <p>Little Troublemaker, thou art now officially my Valentine.</p>
-      <p><strong>Mark the date in your calendar… it’s on.</strong></p>
-    `;
-  }
+    // Update card after short delay
+    setTimeout(() => {
+      document.getElementById("step3").innerHTML = `
+        <h1>It Is Decided 💖</h1>
+        <img src="chick-tiger.png" alt="Chick and Tiger holding hands" class="final-image">
+        <p>Little Troublemaker, thou art now officially my Valentine.</p>
+        <p><strong>Mark the date in your calendar… it’s on.</strong></p>
+      `;
+    }, 200);
+  });
 
   function launchHearts() {
-    for (let i = 0; i < 15; i++) {
+    for(let i=0;i<15;i++){
       const heart = document.createElement("div");
       heart.className = "heart";
       heart.innerHTML = "💖";
-      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.left = Math.random()*100+"vw";
       heart.style.bottom = "20px";
       document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 4000);
+      setTimeout(()=>heart.remove(),4000);
     }
   }
 
   function launchConfetti() {
-    for (let i = 0; i < 80; i++) {
+    for(let i=0;i<80;i++){
       const conf = document.createElement("div");
       conf.className = "confetti";
-      conf.style.left = Math.random() * 100 + "vw";
+      conf.style.left = Math.random()*100+"vw";
       conf.style.top = "-10px";
       conf.style.backgroundColor =
-        ["#ff4d6d", "#ffd166", "#06d6a0", "#118ab2"][Math.floor(Math.random()*4)];
+        ["#ff4d6d","#ffd166","#06d6a0","#118ab2"][Math.floor(Math.random()*4)];
       document.body.appendChild(conf);
-      setTimeout(() => conf.remove(), 3000);
+      setTimeout(()=>conf.remove(),3000);
     }
   }
 </script>
 
 </body>
 </html>
-
