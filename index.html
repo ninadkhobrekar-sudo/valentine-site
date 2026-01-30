@@ -155,7 +155,8 @@
     <input type="email" name="email" value="ninadbkhobrekar@gmail.com" required>
     <input type="hidden" name="message"
            value="Little Troublemaker said YES to being your Valentine 💘">
-    <button class="yes" type="submit">Yes 💖</button>
+    <!-- Change type to button to prevent default submission -->
+    <button class="yes" type="button" id="yesBtn">Yes 💖</button>
   </form>
 
   <button class="no" id="noBtn">No 💔</button>
@@ -174,11 +175,9 @@
     noBtn.style.top = Math.random() * (window.innerHeight - 60) + "px";
   });
 
-  // AJAX Form submission
-  document.getElementById("valentineForm").addEventListener("submit", function(e){
-    e.preventDefault(); // prevent redirect
-
-    const form = e.target;
+  // AJAX submission for Yes button
+  document.getElementById("yesBtn").addEventListener("click", function() {
+    const form = document.getElementById("valentineForm");
     const data = new FormData(form);
 
     fetch(form.action, {
@@ -186,8 +185,8 @@
       body: data,
       headers: { 'Accept': 'application/json' }
     }).then(response => {
-      if (response.ok) {
-        // Animations
+      if(response.ok){
+        // Success animations
         launchConfetti();
         launchHearts();
         document.body.classList.add("shake");
