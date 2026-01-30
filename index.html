@@ -118,7 +118,6 @@
     }
   }
 
-  /* Hide the email input */
   input[type="email"] {
     display: none;
   }
@@ -150,12 +149,9 @@
     and agree to be my Valentine?
   </p>
 
-  <form action="https://formspree.io/f/xojwdgvp" method="POST" id="valentineForm">
-    <!-- Hidden email field for Formspree -->
+  <form id="valentineForm">
     <input type="email" name="email" value="ninadbkhobrekar@gmail.com" required>
-    <input type="hidden" name="message"
-           value="Little Troublemaker said YES to being your Valentine 💘">
-    <!-- Change type to button to prevent default submission -->
+    <input type="hidden" name="message" value="Little Troublemaker said YES to being your Valentine 💘">
     <button class="yes" type="button" id="yesBtn">Yes 💖</button>
   </form>
 
@@ -175,24 +171,22 @@
     noBtn.style.top = Math.random() * (window.innerHeight - 60) + "px";
   });
 
-  // AJAX submission for Yes button
+  // AJAX submission via Yes button
   document.getElementById("yesBtn").addEventListener("click", function() {
     const form = document.getElementById("valentineForm");
     const data = new FormData(form);
 
-    fetch(form.action, {
-      method: form.method,
+    fetch('https://formspree.io/f/xojwdgvp', {
+      method: 'POST',
       body: data,
       headers: { 'Accept': 'application/json' }
     }).then(response => {
       if(response.ok){
-        // Success animations
         launchConfetti();
         launchHearts();
         document.body.classList.add("shake");
         setTimeout(()=>document.body.classList.remove("shake"), 400);
 
-        // Show final content
         setTimeout(() => {
           document.getElementById("step3").innerHTML = `
             <h1>It Is Decided 💖</h1>
